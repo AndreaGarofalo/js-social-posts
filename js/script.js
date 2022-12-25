@@ -82,6 +82,24 @@ const container = document.getElementById("container");
 
 console.log(container);
 
+// creo una funzione per cambiare il formato della data
+
+const changeDateFormat = () => {
+  for (i = 0; i < posts.length; i++) {
+    let newDateFormat = posts[i].date.split(/\//);
+    newDateFormat = [newDateFormat[1], newDateFormat[0], newDateFormat[2]].join(
+      "/"
+    );
+
+    console.log(newDateFormat);
+    posts[i].date = newDateFormat;
+  }
+};
+
+// chiamo la funzione
+
+changeDateFormat();
+
 // creo una funzione che stampi i post sulla pagina
 let post = " ";
 
