@@ -21,6 +21,8 @@
 //  2. Gestire l'assenza dell'immagine profilo con un elemento di fallback che contiene le iniziali dell'utente (es. Luca Formicola  => LF).
 //  3. Al click su un pulsante "Mi Piace" di un post, se abbiamo già cliccato dobbiamo decrementare il contatore e cambiare il colore del bottone.
 
+// creo un array contenente i dati dei vari post
+
 const posts = [
   {
     id: 1,
@@ -73,3 +75,63 @@ const posts = [
     likeNumber: 62,
   },
 ];
+
+// prendo gli elementi dal dom
+
+const container = document.getElementById("container");
+
+console.log(container);
+
+// creo una funzione che stampi i post sulla pagina
+let post = " ";
+
+for (let i = 0; i < posts.length; i++) {
+  post += `<div class="post">
+    <div class="post__header">
+          <div class="post-meta">
+            <div class="post-meta__icon">
+              <img class="profile-pic" src="${posts[i].userPicture}" alt="${posts.author}" />
+            </div>
+            <div class="post-meta__data">
+              <div class="post-meta__author">${posts[i].author}</div>
+              <div class="post-meta__time">${posts[i].date}</div>
+            </div>
+          </div>
+        </div>
+        <div class="post__text">${posts[i].postMessage}</div>
+        <div class="post__image">
+          <img src="${posts[i].postImage}" alt="" />
+        </div>
+        <div class="post__footer">
+          <div class="likes js-likes">
+            <div class="likes__cta">
+              <button class="like-button js-like-button" href="#" data-postid="${posts[i].id}">
+                <i class="like-button__icon fas fa-thumbs-up" aria-hidden="true"></i>
+                <span class="like-button__label">Mi Piace</span>
+              </button>
+            </div>
+            <div class="likes__counter">Piace a <b id="like-counter-${posts[i].id}" class="js-likes-counter">${posts[i].likeNumber}</b> persone</div>
+          </div>
+          </div>
+          </div>`;
+}
+
+container.innerHTML = post;
+
+// prendo il bottone e il contatore dei mi piace dal dom
+
+const button = document.querySelectorAll("button.js-like-button");
+let likeCounter = document.querySelectorAll("b");
+
+// creo un ciclo for per aggiungere l'event listener ai bottoni mi piace e modificare di conseguenza il contatore
+
+for (let i = 0; i < button.length; i++) {
+  button[i].addEventListener("click", () => {
+    if (button[i].classList.contains("like-button--liked")) {
+      likeCounter[i].innerText--;
+    } else {
+      likeCounter[i].innerText++;
+    }
+    button[i].classList.toggle("like-button--liked");
+  });
+}
