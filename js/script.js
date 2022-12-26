@@ -56,7 +56,6 @@ const posts = [
   },
   {
     id: 4,
-    userPicture: "https://unsplash.it/300/300?image=15",
     author: "Luca Suffizzi",
     date: "11/17/2022",
     postMessage:
@@ -66,7 +65,6 @@ const posts = [
   },
   {
     id: 5,
-    userPicture: "https://unsplash.it/300/300?image=15",
     author: "Andrea Padoano",
     date: "12/05/2022",
     postMessage:
@@ -81,6 +79,23 @@ const posts = [
 const container = document.getElementById("container");
 
 console.log(container);
+
+// gestisco il caso in cui la userPicture manchi
+function postUserLetters() {
+  for (let i = 0; i < posts.length; i++) {
+    if (posts[i].userPicture === undefined) {
+      function getFirstLetters(str) {
+        const firstLetters = str
+          .split(" ")
+          .map((word) => word[0])
+          .join("");
+
+        return firstLetters;
+      }
+      posts[i].userPicture = getFirstLetters(posts[i].author);
+    }
+  }
+}
 
 // creo una funzione per cambiare il formato della data
 
@@ -107,9 +122,7 @@ for (let i = 0; i < posts.length; i++) {
   post += `<div class="post">
     <div class="post__header">
           <div class="post-meta">
-            <div class="post-meta__icon">
-              <img class="profile-pic" src="${posts[i].userPicture}" alt="${posts.author}" />
-            </div>
+            <div class="post-meta__icon"></div>
             <div class="post-meta__data">
               <div class="post-meta__author">${posts[i].author}</div>
               <div class="post-meta__time">${posts[i].date}</div>
@@ -153,3 +166,23 @@ for (let i = 0; i < button.length; i++) {
     button[i].classList.toggle("like-button--liked");
   });
 }
+
+postUserLetters();
+
+// creo un userPicture sostituta
+
+const profilePic = document.querySelectorAll(".post-meta__icon");
+
+for (let i = 0; i < posts.length; i++) {
+  if (posts[i].userPicture.length === 2) {
+    profilePic[
+      i
+    ].innerHTML = `<div class="profile-pic-default"><span>${posts[i].userPicture}</span></div>`;
+  } else {
+    profilePic[
+      i
+    ].innerHTML = `<img class="profile-pic" src="${posts[i].userPicture}" alt="${posts.author}" />`;
+  }
+}
+
+console.log(posts);
